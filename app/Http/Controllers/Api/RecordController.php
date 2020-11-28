@@ -18,10 +18,6 @@ class RecordController extends Controller
     }
 
     public function recordTime(Request $request){
-        // $request->validate([
-        //     "name" => 'required',
-        //     "price" => 'required',
-        // ]);
         $id = $request->user_id ;
         $time_attendance = Time_attendance::where('user_id','=',$id)->orderBy('seq', 'DESC')->limit(1)->first();
         

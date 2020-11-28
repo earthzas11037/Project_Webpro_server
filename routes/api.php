@@ -28,6 +28,11 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::post('record/comeIn', 'App\Http\Controllers\Api\RecordController@comeIn');
     Route::post('record/getOut', 'App\Http\Controllers\Api\RecordController@getOut');
     Route::get('record/All', 'App\Http\Controllers\Api\RecordController@getAllRecord');
+
+    Route::post('leaveRecord/insert', 'App\Http\Controllers\Api\LeaveRecordController@insert');
+    Route::post('leaveRecord/approve', 'App\Http\Controllers\Api\LeaveRecordController@approve');
+    Route::post('leaveRecord/disapprove', 'App\Http\Controllers\Api\LeaveRecordController@disapprove');
+    Route::get('leaveRecord/All', 'App\Http\Controllers\Api\LeaveRecordController@getAllLeaveRecord');
 });
 
 Route::post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
