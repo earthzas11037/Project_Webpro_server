@@ -17,6 +17,13 @@ class RecordController extends Controller
         return response()->json(['data' => $time_attendances]);
     }
 
+    public function getAllById($id){
+        
+        $time_attendances = Time_attendance::where('user_id','=', $id)->get();
+
+        return response()->json(['data' => $time_attendances]);
+    }
+
     public function getAllRecordByDate($start, $end){
         
         $time_attendances = Time_attendance::select('time_attendance.seq', 'user.id', 'user.name', 'position.position_th', 'time_attendance.time_in', 'time_attendance.time_out', 'time_attendance.time_sum')

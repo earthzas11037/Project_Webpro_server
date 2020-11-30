@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 use JWTAuth;
 
 class LoginController extends Controller
@@ -12,7 +13,12 @@ class LoginController extends Controller
 
         $input = $request->only(['id', 'password']);
         $token = null;
-        $customClaims = ['type' => 'USER'];
+
+        $user = User::select('position_id')
+                        ->where('id','=',$request->id)
+                        ->first();
+
+        $customClaims = ['position' => $user->position_id];
 
         if (!$token = JWTAuth::claims($customClaims)->attempt($input)) {
             return response()->json([

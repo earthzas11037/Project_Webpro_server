@@ -18,34 +18,43 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('logout', 'App\Http\Controllers\Api\Auth\LoginController@logout');
+Route::group(['middleware' => ['auth.jwt', 'auth_manager']], function () {
     Route::get('alluser', 'App\Http\Controllers\Api\UserController@getAllUsers');
-    Route::get('user/{id}', 'App\Http\Controllers\Api\UserController@getUserById');
     Route::post('updateUser', 'App\Http\Controllers\Api\UserController@update');
-    Route::get('checkToken', 'App\Http\Controllers\Api\UserController@checkToken');
 
-    Route::post('record/byId', 'App\Http\Controllers\Api\RecordController@recordTime');
-    Route::post('record/comeIn', 'App\Http\Controllers\Api\RecordController@comeIn');
-    Route::post('record/getOut', 'App\Http\Controllers\Api\RecordController@getOut');
     Route::post('record/update', 'App\Http\Controllers\Api\RecordController@update');
     Route::get('record/All', 'App\Http\Controllers\Api\RecordController@getAllRecord');
     Route::get('record/AllByDate/{start}/{end}', 'App\Http\Controllers\Api\RecordController@getAllRecordByDate');
 
-    Route::post('leaveRecord/insert', 'App\Http\Controllers\Api\LeaveRecordController@insert');
     Route::post('leaveRecord/approve', 'App\Http\Controllers\Api\LeaveRecordController@approve');
     Route::post('leaveRecord/disapprove', 'App\Http\Controllers\Api\LeaveRecordController@disapprove');
-    Route::get('leaveRecord/All', 'App\Http\Controllers\Api\LeaveRecordController@getAllLeaveRecord');
     Route::get('leaveRecord/AllWaitForApproval', 'App\Http\Controllers\Api\LeaveRecordController@getAllWaitForApproval');
+    
+    Route::post('report/insert', 'App\Http\Controllers\Api\ReportController@insert');
+    Route::get('report/All/{year}/{month}', 'App\Http\Controllers\Api\ReportController@getAllReport');
+});
+
+Route::group(['middleware' => 'auth.jwt'], function () {
+    Route::get('logout', 'App\Http\Controllers\Api\Auth\LoginController@logout');
+    Route::get('user/{id}', 'App\Http\Controllers\Api\UserController@getUserById');
+    Route::get('checkToken', 'App\Http\Controllers\Api\UserController@checkToken');
+
+    Route::post('record/comeIn', 'App\Http\Controllers\Api\RecordController@comeIn');
+    Route::post('record/getOut', 'App\Http\Controllers\Api\RecordController@getOut');
+    Route::get('record/getAll/{id}', 'App\Http\Controllers\Api\RecordController@getAllById');
+
+    Route::post('leaveRecord/insert', 'App\Http\Controllers\Api\LeaveRecordController@insert');
+    Route::get('leaveRecord/All', 'App\Http\Controllers\Api\LeaveRecordController@getAllLeaveRecord');
     Route::get('leaveRecord/AllById/{id}', 'App\Http\Controllers\Api\LeaveRecordController@getAllById');
-// });
 
-Route::post('calendar/insert', 'App\Http\Controllers\Api\CalendarController@insert');
-Route::get('calendar/getById/{id}', 'App\Http\Controllers\Api\CalendarController@getAllById');
-Route::get('calendar/All', 'App\Http\Controllers\Api\CalendarController@getAllCalendar');
+    Route::post('calendar/insert', 'App\Http\Controllers\Api\CalendarController@insert');
+    Route::get('calendar/getById/{id}', 'App\Http\Controllers\Api\CalendarController@getAllById');
+    Route::get('calendar/All', 'App\Http\Controllers\Api\CalendarController@getAllCalendar');
+    
+    Route::post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
+});
 
-Route::post('report/insert', 'App\Http\Controllers\Api\ReportController@insert');
-Route::get('report/All/{year}/{month}', 'App\Http\Controllers\Api\ReportController@getAllReport');
+// คร่าวๆไม่ได้เช็ค login 
+Route::post('record/byId', 'App\Http\Controllers\Api\RecordController@recordTime');
 
 Route::post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
-Route::post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
