@@ -17,10 +17,14 @@ class RegisterController extends Controller
         // ]);
 
         $user = new User([
-            'user_id' => $request->user_id,
+            // 'user_id' => $request->user_id,
             'password' => bcrypt($request->password),
             'name' => $request->name,
-            'tel' => $request->tel
+            'tel' => $request->tel,
+            'person_id' => $request->person_id,
+            'salary' => $request->salary,
+            'position_id' => $request->position_id,
+            'type_id' => 1
         ]);
         
         $user->save();

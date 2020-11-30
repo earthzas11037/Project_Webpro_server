@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Time_attendance extends Model
+class Report extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'seq',
         'user_id',
-        'date',
-        'time_in',
-        'time_out',
-        'time_sum'
+        'working_days',
+        'working_hours',
+        'ot',
+        'sum_salary',
+        'date'
     ];
 
     public $timestamps = false;
-    protected $table = "time_attendance";
+    protected $table = "report";
 }

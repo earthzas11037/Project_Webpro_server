@@ -17,9 +17,32 @@ class UserController extends Controller
     }
 
     public function getUserById($id){
-        $users = User::where('id','=',$id)->get();
+        $users = User::select('user.id', 'user.name', 'user.tel', 'user.person_id', 'user.salary', 
+                            'user.position_id', 'position.position_eng', 'position.position_th', 
+                            'user.type_id', 'type.type_name')
+                        ->join('position', 'user.position_id', '=', 'position.position_id')
+                        ->join('type', 'user.type_id', '=', 'type.type_id')
+                        ->where('id','=',$id)
+                        ->first();
         
         return response()->json(['data' => $users]);
+    }
+
+    public function update(Request $request){
+        try{
+            User::where('id', '=', $request->id)->update([
+                'name' => $request->name,
+                'tel' => $request->tel,
+                'person_id' => $request->person_id,
+                'position_id' => $request->position_id,
+                'salary' => $request->salary,
+            ]);
+    
+            return response()->json(['message' => 'update user success']);
+
+        }catch (QueryException $e) {
+            return response()->json(['data' => "update user fail"]);
+        }
     }
 
     // decode JWT Token (เอา payload ออกมา)

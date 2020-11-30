@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\CalendarController;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Models\Leave_record;
 use Carbon\Carbon;
 class LeaveRecordController extends Controller
@@ -12,6 +13,20 @@ class LeaveRecordController extends Controller
     public function getAllLeaveRecord(){
         
         $leave_records = Leave_record::all();
+
+        return response()->json(['data' => $leave_records]);
+    }
+
+    public function getAllWaitForApproval(){
+        
+        $leave_records = Leave_record::where('status_id','=', '1')->get();
+
+        return response()->json(['data' => $leave_records]);
+    }
+
+    public function getAllById($id){
+        
+        $leave_records = Leave_record::where('user_id','=', $id)->get();
 
         return response()->json(['data' => $leave_records]);
     }
@@ -46,7 +61,15 @@ class LeaveRecordController extends Controller
                     Leave_record::where('seq', '=',$seq)->update([
                         'status_id' => 2,
                     ]);
-                    return response()->json(['message' => 'update success']);
+
+                    $obj = new CalendarController;
+                    $result = $obj->insertAll($leave_record);
+                    if($result == 'success'){
+                        return response()->json(['message' => 'update success']);
+                    }
+                    else{
+                        return response()->json(['message' => 'insert calendar fail']);
+                    }
                 }
                 else{
                     return response()->json(['message' => 'update fail']);

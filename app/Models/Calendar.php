@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Time_attendance extends Model
+class Calendar extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'seq',
         'user_id',
-        'date',
-        'time_in',
-        'time_out',
-        'time_sum'
+        'topic',
+        'detail',
+        'date_end',
+        'date_start',
+        'calendar_type',
     ];
 
     public $timestamps = false;
-    protected $table = "time_attendance";
+    protected $table = "calendar";
 }
