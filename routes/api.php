@@ -19,8 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth.jwt', 'auth_manager']], function () {
+    Route::get('checkTokenManager',function () {
+        return response()->json(['message' => true ]);
+    });
     Route::get('alluser', 'App\Http\Controllers\Api\UserController@getAllUsers');
     Route::post('updateUser', 'App\Http\Controllers\Api\UserController@update');
+
+    Route::get('getdataforregister', 'App\Http\Controllers\Api\Auth\RegisterController@getdataforRegister');
+    Route::post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
 
     Route::post('record/update', 'App\Http\Controllers\Api\RecordController@update');
     Route::get('record/All', 'App\Http\Controllers\Api\RecordController@getAllRecord');
@@ -35,9 +41,11 @@ Route::group(['middleware' => ['auth.jwt', 'auth_manager']], function () {
 });
 
 Route::group(['middleware' => 'auth.jwt'], function () {
+    Route::get('checkToken',function () {
+        return response()->json(['message' => true ]);
+    });
     Route::get('logout', 'App\Http\Controllers\Api\Auth\LoginController@logout');
     Route::get('user/{id}', 'App\Http\Controllers\Api\UserController@getUserById');
-    Route::get('checkToken', 'App\Http\Controllers\Api\UserController@checkToken');
 
     Route::post('record/comeIn', 'App\Http\Controllers\Api\RecordController@comeIn');
     Route::post('record/getOut', 'App\Http\Controllers\Api\RecordController@getOut');
@@ -51,10 +59,14 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('calendar/getById/{id}', 'App\Http\Controllers\Api\CalendarController@getAllById');
     Route::get('calendar/All', 'App\Http\Controllers\Api\CalendarController@getAllCalendar');
     
-    Route::post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
 });
 
-// คร่าวๆไม่ได้เช็ค login 
-Route::post('record/byId', 'App\Http\Controllers\Api\RecordController@recordTime');
+Route::group(['middleware' => ['auth.jwt', 'auth_admin']], function () {
+    Route::get('checkTokenAdmin',function () {
+        return response()->json(['message' => true ]);
+    });
+    Route::post('record/byId', 'App\Http\Controllers\Api\RecordController@recordTime');
+});
+
 
 Route::post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');

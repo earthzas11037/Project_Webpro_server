@@ -14,11 +14,13 @@ class LoginController extends Controller
         $input = $request->only(['id', 'password']);
         $token = null;
 
-        $user = User::select('position_id')
+        $user = User::select('user.name', 'position.position_eng', 'position.position_th', 'type.type_name')
+                        ->join('position', 'user.position_id', '=', 'position.position_id')
+                        ->join('type', 'user.type_id', '=', 'type.type_id')
                         ->where('id','=',$request->id)
                         ->first();
 
-        $customClaims = ['position' => $user->position_id];
+        $customClaims = ['name' => $user->name, 'position_eng' => $user->position_eng, 'position_th' => $user->position_th, 'type' => $user->type_name];
 
         if (!$token = JWTAuth::claims($customClaims)->attempt($input)) {
             return response()->json([
@@ -52,5 +54,12 @@ class LoginController extends Controller
                 'message' => 'Sorry, the user cannot be logged out'
             ], 500);
         }
+    }
+
+    public function checkTokenAuthen()
+    {
+        return response()->json([
+            'message' => true
+        ]);
     }
 }

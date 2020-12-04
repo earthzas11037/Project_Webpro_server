@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use JWTAuth;
 
-class AuthenManager
+class AuthenAdmin
 {
     /**
      * Handle an incoming request.
@@ -22,9 +22,9 @@ class AuthenManager
             $token = JWTAuth::getToken();
             $apy = JWTAuth::getPayload($token);
             // ดึงค่าจากตัวแปร type
-            $type = $apy->get('position_eng');
+            $type = $apy->get('type');
 
-            if($type == "MANAGER"){
+            if($type == "ADMIN"){
                 return $next($request);
             }
             else{
@@ -44,6 +44,5 @@ class AuthenManager
             return response()->json(['token_absent' => $e->getMessage()], 500);
     
         }
-
     }
 }

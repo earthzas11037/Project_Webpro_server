@@ -12,7 +12,11 @@ class RecordController extends Controller
 {
     public function getAllRecord(){
         
-        $time_attendances = Time_attendance::all();
+        $time_attendances = Time_attendance::select('time_attendance.seq', 'time_attendance.date', 'user.id', 'user.name', 'position.position_th', 'time_attendance.time_in', 'time_attendance.time_out', 'time_attendance.time_sum')
+                                            ->join('user', 'user.id', '=', 'time_attendance.user_id')
+                                            ->join('position', 'user.position_id', '=', 'position.position_id')
+                                            ->orderBy('time_attendance.date', 'DESC')
+                                            ->get();
 
         return response()->json(['data' => $time_attendances]);
     }
@@ -26,10 +30,11 @@ class RecordController extends Controller
 
     public function getAllRecordByDate($start, $end){
         
-        $time_attendances = Time_attendance::select('time_attendance.seq', 'user.id', 'user.name', 'position.position_th', 'time_attendance.time_in', 'time_attendance.time_out', 'time_attendance.time_sum')
+        $time_attendances = Time_attendance::select('time_attendance.seq', 'time_attendance.date','user.id', 'user.name', 'position.position_th', 'time_attendance.time_in', 'time_attendance.time_out', 'time_attendance.time_sum')
                                             ->join('user', 'user.id', '=', 'time_attendance.user_id')
                                             ->join('position', 'user.position_id', '=', 'position.position_id')
                                             ->whereBetween('date', [$start, $end])
+                                            ->orderBy('time_attendance.seq', 'DESC')
                                             ->get();
 
         return response()->json(['data' => $time_attendances]);
@@ -73,7 +78,7 @@ class RecordController extends Controller
                         'time_out' => $time,
                         'time_sum' => $totalDuration,
                     ]);
-                    return response()->json(['data' => "update record success"]);
+                    return response()->json(['message' => "บันทึกเวลาออก => วันที่ : ".$time_attendance->date." เวลา : ".$time]);
                 }
                 else{
                     $date = Carbon::now()->toDateString();
@@ -83,7 +88,7 @@ class RecordController extends Controller
                         'date' => $date,
                         'time_in' => $time,
                     ]);
-                    return response()->json(['data' => "insert record success"]);
+                    return response()->json(['message' => "บันทึกเวลาเข้า => วันที่ : ".$date." เวลา : ".$time]);
                 }
             }
             else{
@@ -94,12 +99,12 @@ class RecordController extends Controller
                     'date' => $date,
                     'time_in' => $time,
                 ]);
-                return response()->json(['data' => "insert record success"]);
+                return response()->json(['message' => "บันทึกเวลาเข้า => วันที่ : ".$date." เวลา : ".$time]);
             }
-            return response()->json(['data' => $time_attendance->time_out]);
+            return response()->json(['message' => $time_attendance->time_out]);
 
         }catch (QueryException $e) {
-            return response()->json(['data' => "insert record fail"]);
+            return response()->json(['message' => "insert record fail"]);
         }
     }
 

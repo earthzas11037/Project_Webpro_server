@@ -11,7 +11,13 @@ class UserController extends Controller
 {
     public function getAllUsers(){
         
-        $users = User::all();
+        $users = User::select('user.id', 'user.name', 'user.tel', 'user.person_id', 'user.salary', 
+                            'user.position_id', 'position.position_eng', 'position.position_th', 
+                            'user.type_id', 'type.type_name')
+                        ->join('position', 'user.position_id', '=', 'position.position_id')
+                        ->join('type', 'user.type_id', '=', 'type.type_id')
+                        ->where('user.type_id','=', 1)
+                        ->get();
 
         return response()->json(['data' => $users]);
     }

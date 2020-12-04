@@ -19,7 +19,11 @@ class LeaveRecordController extends Controller
 
     public function getAllWaitForApproval(){
         
-        $leave_records = Leave_record::where('status_id','=', '1')->get();
+        $leave_records = Leave_record::select('leave_record.seq', 'leave_record.user_id', 'user.name',
+                                                'leave_record.date_start', 'leave_record.date_end', 'leave_record.leave_type', 'leave_record.detail')
+                                        ->join('user', 'user.id', '=', 'leave_record.user_id')
+                                        ->where('status_id','=', '1')
+                                        ->get();
 
         return response()->json(['data' => $leave_records]);
     }
