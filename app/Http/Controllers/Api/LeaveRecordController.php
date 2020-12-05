@@ -30,9 +30,19 @@ class LeaveRecordController extends Controller
 
     public function getAllById($id){
         
-        $leave_records = Leave_record::where('user_id','=', $id)->get();
+        $leave_records1 = Leave_record::where('user_id','=', $id)
+                                        ->where('status_id','=', '1')
+                                        ->get();
 
-        return response()->json(['data' => $leave_records]);
+        $leave_records2 = Leave_record::where('user_id','=', $id)
+                                        ->where('status_id','=', '2')
+                                        ->get();
+
+        $leave_records3 = Leave_record::where('user_id','=', $id)
+                                        ->where('status_id','=', '3')
+                                        ->get();
+
+        return response()->json(['datawait' => $leave_records1, 'dataapprove' => $leave_records2, 'datadisapprove' => $leave_records3]);
     }
 
     public function insert(Request $request){

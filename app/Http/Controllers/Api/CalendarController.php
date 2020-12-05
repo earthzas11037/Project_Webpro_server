@@ -24,11 +24,40 @@ class CalendarController extends Controller
         try{
             Calendar::create([
                 'user_id' => $request->user_id,
-                'topic' => $request->topic,
+                'topic' => $request->title,
                 'detail' => $request->detail,
-                'date_start' => $request->date_start,
-                'date_end' => $request->date_end,
+                'date_start' => $request->start,
+                'date_end' => $request->end,
                 'calendar_type' => 'USER',
+            ]);
+
+            return response()->json(['message' => 'success']);
+
+        }catch (QueryException $e) {
+            return response()->json(['message' => 'fail']);
+        }
+    }
+
+    public function remove($seq){
+        
+        try{
+            Calendar::where("seq", "=" , $seq)->delete();
+
+            return response()->json(['message' => 'success']);
+
+        }catch (QueryException $e) {
+            return response()->json(['message' => 'fail']);
+        }
+    }
+
+    public function update(Request $request){
+        
+        try{
+            Calendar::where('seq', '=', $request->seq)->update([
+                'topic' => $request->title,
+                'detail' => $request->detail,
+                'date_start' => $request->start,
+                'date_end' => $request->end,
             ]);
 
             return response()->json(['message' => 'success']);

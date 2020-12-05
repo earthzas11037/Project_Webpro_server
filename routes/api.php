@@ -55,7 +55,9 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('leaveRecord/All', 'App\Http\Controllers\Api\LeaveRecordController@getAllLeaveRecord');
     Route::get('leaveRecord/AllById/{id}', 'App\Http\Controllers\Api\LeaveRecordController@getAllById');
 
+    Route::get('calendar/remove/{seq}', 'App\Http\Controllers\Api\CalendarController@remove');
     Route::post('calendar/insert', 'App\Http\Controllers\Api\CalendarController@insert');
+    Route::post('calendar/update', 'App\Http\Controllers\Api\CalendarController@update');
     Route::get('calendar/getById/{id}', 'App\Http\Controllers\Api\CalendarController@getAllById');
     Route::get('calendar/All', 'App\Http\Controllers\Api\CalendarController@getAllCalendar');
     
