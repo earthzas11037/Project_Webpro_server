@@ -34,7 +34,7 @@ class CalendarController extends Controller
             return response()->json(['message' => 'success']);
 
         }catch (QueryException $e) {
-            return response()->json(['message' => 'fail']);
+            return response()->json(['message' => 'fail'], 400);
         }
     }
 
@@ -46,7 +46,7 @@ class CalendarController extends Controller
             return response()->json(['message' => 'success']);
 
         }catch (QueryException $e) {
-            return response()->json(['message' => 'fail']);
+            return response()->json(['message' => 'fail'], 400);
         }
     }
 
@@ -63,7 +63,7 @@ class CalendarController extends Controller
             return response()->json(['message' => 'success']);
 
         }catch (QueryException $e) {
-            return response()->json(['message' => 'fail']);
+            return response()->json(['message' => 'fail'], 400);
         }
     }
 

@@ -60,7 +60,7 @@ class LeaveRecordController extends Controller
             return response()->json(['message' => 'success']);
 
         }catch (QueryException $e) {
-            return response()->json(['message' => 'fail']);
+            return response()->json(['message' => 'fail'], 400);
         }
     }
 
@@ -82,19 +82,19 @@ class LeaveRecordController extends Controller
                         return response()->json(['message' => 'update success']);
                     }
                     else{
-                        return response()->json(['message' => 'insert calendar fail']);
+                        return response()->json(['message' => 'insert calendar fail'], 400);
                     }
                 }
                 else{
-                    return response()->json(['message' => 'update fail']);
+                    return response()->json(['message' => 'update fail'], 400);
                 }
             }
             else{
-                return response()->json(['message' => 'update fail']);
+                return response()->json(['message' => 'update fail'], 400);
             }
         }
 
-        return response()->json(['message' => 'update fail']);
+        return response()->json(['message' => 'update fail'], 400);
     }
 
     public function disapprove(Request $request){
@@ -111,14 +111,14 @@ class LeaveRecordController extends Controller
                     return response()->json(['message' => 'update success']);
                 }
                 else{
-                    return response()->json(['message' => 'update fail']);
+                    return response()->json(['message' => 'update fail'], 400);
                 }
             }
             else{
-                return response()->json(['message' => 'update fail']);
+                return response()->json(['message' => 'update fail'], 400);
             }
         }
 
-        return response()->json(['message' => 'update fail']);
+        return response()->json(['message' => 'update fail'], 400);
     }
 }

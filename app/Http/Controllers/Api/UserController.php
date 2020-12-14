@@ -29,7 +29,7 @@ class UserController extends Controller
                         ->join('position', 'user.position_id', '=', 'position.position_id')
                         ->join('type', 'user.type_id', '=', 'type.type_id')
                         ->where('id','=',$id)
-                        ->first();
+                        ->get();
         
         return response()->json(['data' => $users]);
     }
@@ -47,7 +47,7 @@ class UserController extends Controller
             return response()->json(['message' => 'update user success']);
 
         }catch (QueryException $e) {
-            return response()->json(['data' => "update user fail"]);
+            return response()->json(['data' => "update user fail"], 400);
         }
     }
 

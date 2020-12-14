@@ -124,14 +124,14 @@ class ReportController extends Controller
                     // return response()->json(['newdata' => $reports]);
                     return response()->json(['message' => 'insert report success']);
                 }
-                return response()->json(['message' => 'insert report fail']);
+                return response()->json(['message' => 'insert report fail'], 400);
     
             }catch (QueryException $e) {
-                return response()->json(['message' => 'insert report fail']);
+                return response()->json(['message' => 'insert report fail'], 400);
             }
         }
         else{
-            return response()->json(['message' => 'insert report fail']);
+            return response()->json(['message' => 'insert report fail'], 400);
         }
     }
 }

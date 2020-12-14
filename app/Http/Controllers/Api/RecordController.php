@@ -55,7 +55,7 @@ class RecordController extends Controller
             return response()->json(['message' => 'update record success']);
 
         }catch (QueryException $e) {
-            return response()->json(['data' => "update record fail"]);
+            return response()->json(['data' => "update record fail"], 400);
         }
 
     }
@@ -104,7 +104,7 @@ class RecordController extends Controller
             return response()->json(['message' => $time_attendance->time_out]);
 
         }catch (QueryException $e) {
-            return response()->json(['message' => "insert record fail"]);
+            return response()->json(['message' => "insert record fail"], 400);
         }
     }
 
@@ -115,7 +115,7 @@ class RecordController extends Controller
             $time_attendance = Time_attendance::where('user_id','=',$id)->orderBy('seq', 'DESC')->limit(1)->first();
             if($time_attendance != null){
                 if($time_attendance->time_in != null && $time_attendance->time_out == null){
-                    return response()->json(['data' => "insert record fail"]);
+                    return response()->json(['data' => "insert record fail"], 400);
                 }
                 else{
                     $date = Carbon::now()->toDateString();
@@ -139,7 +139,7 @@ class RecordController extends Controller
                 return response()->json(['data' => "insert record success"]);
             }
         }catch (QueryException $e) {
-            return response()->json(['data' => "insert record fail"]);
+            return response()->json(['data' => "insert record fail"], 400);
         }
 
     }
@@ -157,11 +157,11 @@ class RecordController extends Controller
                 return response()->json(['data' => "update record success"]);
             }
             else{
-                return response()->json(['data' => "update record fail"]);
+                return response()->json(['data' => "update record fail"], 400);
             }
         }
         else{
-            return response()->json(['data' => "update record fail"]);
+            return response()->json(['data' => "update record fail"], 400);
         }
     }
 }
